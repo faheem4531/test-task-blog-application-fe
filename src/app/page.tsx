@@ -1,10 +1,10 @@
-import { Box } from "@mui/material";
+import Header from "./_components/header/Header";
 
 const Home = () => {
   return (
-    <Box>
-      Initial page
-    </Box>
+    <div >
+      <Header />
+    </div>
   );
 };
 
