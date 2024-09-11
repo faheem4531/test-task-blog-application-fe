@@ -26,6 +26,15 @@ export const getBlogById = async (id: string): Promise<IBlog> => {
   }
 };
 
+export const deleteBlogById = async (id: string): Promise<IBlog> => {
+  try {
+    const response = await apiClient.delete(`/blogs/${id}`);
+    return response.data;
+  } catch (error: any) {
+    throw handleError(error, "Failed to fetch product details");
+  }
+};
+
 export const handleError = (error: any, defaultMessage: string): void => {
   if (error.response) {
     // Server responded with an error
