@@ -1,5 +1,12 @@
+// react/next imports
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
+// third party imports
+import { Slide, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+
+// local imports
 import Header from "./_components/header/Header";
 import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
@@ -18,6 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
+        <ToastContainer transition={Slide} />
         {children}
       </body>
     </html>

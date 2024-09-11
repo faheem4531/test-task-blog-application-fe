@@ -14,10 +14,15 @@ import FlatList from "@/app/_components/flatlist/FlatList";
 
 const Blogs = () => {
   const router = useRouter();
-  const { blogs, loading, error, loadMoreBlogs, hasMore } = useBlogs();
+  const { blogs, loading, error, loadMoreBlogs, hasMore, deleteBlog } =
+    useBlogs();
 
   const handleNavigate = (id: string) => {
     router.push(`blogs/${id}`);
+  };
+
+  const handleDelete = (id: string) => {
+    deleteBlog(id);
   };
 
   return (
@@ -37,12 +42,14 @@ const Blogs = () => {
           data={blogs}
           renderItem={(item) => (
             <BlogCard
+              _id={item._id}
               image={item.coverImage}
               title={item.title}
               description={item.briefContent}
               author={item.author}
               date={item.createdAt}
               onClick={() => handleNavigate(item._id)}
+              onDelete={() => handleDelete(item._id)}
             />
           )}
           loadMore={loadMoreBlogs}

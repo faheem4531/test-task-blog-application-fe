@@ -1,5 +1,11 @@
+// react imports
 import { useEffect, useState, useCallback } from "react";
-import { getBlogs } from "../_api/apiService";
+
+// third party imports
+import { toast } from "react-toastify";
+
+// local imports
+import { getBlogs, deleteBlogById } from "../_api/apiService";
 import { API_LIMIT } from "../_utils/constants";
 
 const useBlogs = (limit: number = API_LIMIT) => {
@@ -9,6 +15,7 @@ const useBlogs = (limit: number = API_LIMIT) => {
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
 
+  // Fetch blogs with pagination
   const fetchBlogs = useCallback(async (page: number, limit: number) => {
     setLoading(true);
     setError(null); // Reset error before fetching
@@ -17,12 +24,10 @@ const useBlogs = (limit: number = API_LIMIT) => {
       const response = await getBlogs(page, limit);
       const { data, totalPages } = response;
 
-      setBlogs((prevProducts) =>
-        page === 1 ? data : [...prevProducts, ...data]
-      );
+      setBlogs((prevBlogs) => (page === 1 ? data : [...prevBlogs, ...data]));
       setHasMore(page < totalPages);
     } catch (err: any) {
-      console.error("Error fetching products:", err.message);
+      console.error("Error fetching blogs:", err.message);
       setError(err.message); // Improved error message handling
     } finally {
       setLoading(false);
@@ -47,7 +52,25 @@ const useBlogs = (limit: number = API_LIMIT) => {
     }
   };
 
-  return { blogs, loading, error, loadMoreBlogs, hasMore };
+  // Delete a blog by ID and refetch the data
+  const deleteBlog = async (id: string) => {
+    setLoading(true);
+    setError(null);
+    setBlogs((prevBlogs) => prevBlogs.filter((blog) => blog._id !== id));
+
+    try {
+      await deleteBlogById(id);
+      toast.success("Blog deleted successfully");
+    } catch (err: any) {
+      console.error("Error deleting blog:", err.message);
+      toast.error("Failed to delete blog");
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { blogs, loading, error, loadMoreBlogs, hasMore, deleteBlog };
 };
 
 export default useBlogs;
