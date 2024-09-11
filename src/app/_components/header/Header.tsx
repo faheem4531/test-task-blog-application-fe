@@ -11,7 +11,7 @@ const Header = () => {
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
       width: "100%",
     }}>
-      <Link href="/blogs">
+      <Link href="/blogs" passHref>
         <Typography
           sx={{
             transition: 'all 0.3s ease',
@@ -22,7 +22,7 @@ const Header = () => {
           }}
         >Blogs</Typography>
       </Link>
-      <Link href="/create">
+      <Link href="/create" passHref>
         <Typography
           sx={{
             transition: 'all 0.3s ease',
