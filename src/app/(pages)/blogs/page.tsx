@@ -2,11 +2,12 @@
 
 import { Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import { useRouter } from "next/navigation";
 
 import BlogCard from "@/app/_components/card/BlogCard";
 
 const Blogs = () => {
-
+  const router = useRouter();
   const blogData = [
     {
       image: "https://zciclyqzxathornwysqe.supabase.co/storage/v1/object/public/blog-images/79bea811-9ea8-4680-afcd-a05374a65e5d/1722956072526_0.jpg",
@@ -14,6 +15,7 @@ const Blogs = () => {
       description: "An insightful guide to creating the perfect first impression via text.",
       author: "Brian Tam",
       date: "May 10, 2024",
+      _id: "b1"
     },
     {
       image: "https://zciclyqzxathornwysqe.supabase.co/storage/v1/object/public/blog-images/79bea811-9ea8-4680-afcd-a05374a65e5d/1722956072526_0.jpg",
@@ -21,6 +23,7 @@ const Blogs = () => {
       description: "Learn the techniques to become a great conversationalist.",
       author: "Jane Doe",
       date: "June 15, 2024",
+      _id: "b2"
     },
     {
       image: "https://zciclyqzxathornwysqe.supabase.co/storage/v1/object/public/blog-images/79bea811-9ea8-4680-afcd-a05374a65e5d/1722956072526_0.jpg",
@@ -28,9 +31,13 @@ const Blogs = () => {
       description: "An analysis of how first impressions affect relationships.",
       author: "John Smith",
       date: "July 21, 2024",
+      _id: "b3"
     }
   ];
 
+  const handleNavigate = (id: string) => {
+    router.push(`blogs/${id}`);
+  };
 
   return (
     <Box sx={{
@@ -50,6 +57,7 @@ const Blogs = () => {
               description={blog.description}
               author={blog.author}
               date={blog.date}
+              onClick={() => handleNavigate(blog.title)}
             />
           </Grid>
         ))}

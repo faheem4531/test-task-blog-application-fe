@@ -7,8 +7,9 @@ interface BlogCardProps {
   description: string;
   date: string;
   author: string;
+  onClick: () => void;
 }
-const BlogCard: React.FC<BlogCardProps> = ({ image, title, description, date, author }) => {
+const BlogCard: React.FC<BlogCardProps> = ({ image, title, description, date, author, onClick }) => {
   return (
     <Box
       sx={{
@@ -19,8 +20,10 @@ const BlogCard: React.FC<BlogCardProps> = ({ image, title, description, date, au
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
         borderRadius: "8px",
         minWidth: "300px",
-        m: "0 auto"
+        m: "0 auto", 
+        cursor:"pointer"
       }}
+      onClick={onClick}
     >
       <Card>
         <CardMedia
