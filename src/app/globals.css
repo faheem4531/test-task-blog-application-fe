@@ -30,5 +30,6 @@ a {
 .mantine-1qycoz3 .ql-editor {
   min-height: 230px !important;
   max-height: 350px !important;
-  overflow: auto;
+  overflow: auto !important;
+  background-color: #fff;
 }

@@ -19,6 +19,8 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
   const [description, setDescription] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
   const [content, setContent] = useState<string>("");
+  const heading = status === "edit" ? "Edit Blog" : "Create a New Blog";
+  const btnStatus = status === "edit" ? "Update Blog" : "Publish Blog";
 
   const handleSubmit = () => {
     const blogData = {
@@ -28,7 +30,13 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
       content,
     };
     console.log("Submitted Blog Data:", blogData);
+    
     alert("Blog submitted successfully! Check console for details.");
+
+    setTitle("")
+    setDescription("")
+    setAuthor("")
+    setContent("")
   };
 
   // const ImageHandler = () => {
@@ -47,7 +55,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
     <Box sx={{ p: 4, maxWidth: "800px", margin: "50px auto 0" }}>
       <Paper elevation={3} sx={{ p: 3 }}>
         <Typography variant="h4" gutterBottom align="center">
-          {status === "edit" ? "Edit " : "Create a New "} Blog
+          {heading}
         </Typography>
 
         <Grid container spacing={3}>
@@ -113,7 +121,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
             disabled={!title || !author || !description || !content}
             onClick={handleSubmit}
           >
-            Publish Blog
+           {btnStatus}
           </Button>
         </Box>
       </Paper>
