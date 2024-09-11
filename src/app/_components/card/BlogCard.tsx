@@ -3,6 +3,7 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Card, CardActions, CardContent, CardMedia, IconButton, Typography } from '@mui/material';
+import { useRouter } from "next/navigation";
 import React, { useState } from 'react';
 import DeleteModal from '../modal/DeleteModal';
 
@@ -15,7 +16,7 @@ interface BlogCardProps {
   onClick: () => void;
 }
 const BlogCard: React.FC<BlogCardProps> = ({ image, title, description, date, author, onClick }) => {
-
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => {
@@ -30,6 +31,10 @@ const BlogCard: React.FC<BlogCardProps> = ({ image, title, description, date, au
     handleCloseModal();
   };
 
+  const handleEdit = (id: string) => {
+    router.push(`blogs/update/${id}`);
+  }
+
 
   return (
     <>
@@ -43,9 +48,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ image, title, description, date, au
           borderRadius: "8px",
           minWidth: "300px",
           m: "0 auto",
-
         }}
-
       >
         <Card>
           <CardMedia
@@ -73,7 +76,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ image, title, description, date, au
                 {date}
               </Typography>
               <Box>
-                <IconButton color="primary">
+                <IconButton color="primary" onClick={() => handleEdit("dumyId")}>
                   <EditIcon />
                 </IconButton>
                 <IconButton aria-label="delete" color="error" onClick={handleOpenModal}>

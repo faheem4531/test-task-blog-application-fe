@@ -6,7 +6,10 @@ import { useState } from "react";
 import { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
-const CreateBlog = () => {
+interface CreateBlogProps {
+  status: string
+}
+const CreateBlog: React.FC<CreateBlogProps> = ({ status }) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
@@ -39,7 +42,7 @@ const CreateBlog = () => {
     <Box sx={{ p: 4, maxWidth: "800px", margin: "50px auto 0" }}>
       <Paper elevation={3} sx={{ p: 3 }}>
         <Typography variant="h4" gutterBottom align="center">
-          Create a New Blog
+          {status === "edit" ? "Edit " : "Create a New "} Blog
         </Typography>
 
         <Grid container spacing={3}>
