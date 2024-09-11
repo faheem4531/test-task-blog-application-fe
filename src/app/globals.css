@@ -28,5 +28,7 @@ a {
 }
 
 .mantine-1qycoz3 .ql-editor {
-  height: 230px !important;
+  min-height: 230px !important;
+  max-height: 350px !important;
+  overflow: auto;
 }

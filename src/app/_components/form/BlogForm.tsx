@@ -1,8 +1,8 @@
 'use client'
 // import RichTextEditor from "@mantine/rte";
-import { Box, Paper, Typography,Grid,TextField,Button } from "@mui/material";
-import { useState } from "react";
+import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
+import { useState } from "react";
 
 // import { Quill } from 'react-quill';
 // import 'react-quill/dist/quill.snow.css'; // Import Quill styles
@@ -47,11 +47,10 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
     <Box sx={{ p: 4, maxWidth: "800px", margin: "50px auto 0" }}>
       <Paper elevation={3} sx={{ p: 3 }}>
         <Typography variant="h4" gutterBottom align="center">
-          {/* {status === "edit" ? "Edit " : "Create a New "} Blog */}
-          {status}
+          {status === "edit" ? "Edit " : "Create a New "} Blog
         </Typography>
 
-       <Grid container spacing={3}>
+        <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -101,9 +100,9 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
               onChange={setContent}
             />
           </Grid>
-        </Grid> 
+        </Grid>
 
-        <Box mt={4} display="flex" justifyContent="center">
+        <Box mt={4} display="flex" justifyContent="end">
           <Button
             sx={{
               bgcolor: "#222831",
@@ -111,6 +110,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
               fontSize: "16px",
               padding: "10px 30px"
             }}
+            disabled={!title || !author || !description || !content}
             onClick={handleSubmit}
           >
             Publish Blog
