@@ -6,10 +6,10 @@ import { useState } from "react";
 import { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
-interface CreateBlogProps {
-  status: string
-}
-const CreateBlog: React.FC<CreateBlogProps> = ({ status }) => {
+// interface CreateBlogProps {
+//   status: string
+// }
+const CreateBlog: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [author, setAuthor] = useState<string>("");

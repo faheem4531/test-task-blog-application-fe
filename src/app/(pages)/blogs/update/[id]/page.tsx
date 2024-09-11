@@ -12,7 +12,7 @@ const BelogsDetails = () => {
 
   return (
 <>
-<CreateBlog status="edit"/>
+<CreateBlog />
 </>
   );
 };
