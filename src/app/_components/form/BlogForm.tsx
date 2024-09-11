@@ -1,9 +1,11 @@
 'use client'
 
-import { uploadImage } from '@/app/_api/apiService';
+import { createBlog, uploadImage } from '@/app/_api/apiService';
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RichTextEditor = dynamic(() => import("@mantine/rte"), {
   ssr: false,
@@ -16,17 +18,18 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const heading = status === "edit" ? "Edit Blog" : "Create a New Blog";
   const btnStatus = status === "edit" ? "Update Blog" : "Publish Blog";
 
   // const handleSubmit = () => {
-  //   const blogData = {
-  //     title,
-  //     description,
-  //     author,
-  //     content,
-  //   };
+  // const blogData = {
+  //   title,
+  //   description,
+  //   author,
+  //   content,
+  // };
   //   console.log("Submitted Blog Data:", blogData);
 
   //   alert("Blog submitted successfully! Check console for details.");
@@ -57,8 +60,23 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
     formData.append("file", selectedFile);
 
     try {
-      const imageUrl = await uploadImage(formData)
-      console.log(imageUrl, "imageUrl")
+      const coverImage = await uploadImage(formData)
+      const blogData = {
+        title,
+        briefContent: description,
+        author,
+        content,
+        coverImage,
+        category
+      };
+      await createBlog(blogData);
+      toast.success("Blog created successfully!");
+      setTitle("")
+      setDescription("")
+      setAuthor("")
+      setContent("")
+      setCategory("")
+      setSelectedFile(null)
     } catch (error) {
       console.error("Error uploading file:", error);
     }
@@ -105,7 +123,16 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
               required
             />
           </Grid>
-
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Category"
+              variant="outlined"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            />
+          </Grid>
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
               Blog Content
