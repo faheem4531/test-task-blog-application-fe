@@ -1,10 +1,13 @@
 "use client";
+// react/next imports
 import { useRouter } from "next/navigation";
 
+// third party imports
 import { Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { ThreeDots } from "react-loader-spinner";
 
+// local imports
 import BlogCard from "@/app/_components/card/BlogCard";
 import useBlogs from "@/app/_hooks/useBlogs";
 import FlatList from "@/app/_components/flatlist/FlatList";

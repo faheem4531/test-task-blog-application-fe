@@ -17,6 +17,15 @@ export const getBlogs = async (
   }
 };
 
+export const getBlogById = async (id: string): Promise<IBlog> => {
+  try {
+    const response = await apiClient.get(`/blogs/${id}`);
+    return response.data;
+  } catch (error: any) {
+    throw handleError(error, "Failed to fetch product details");
+  }
+};
+
 export const handleError = (error: any, defaultMessage: string): void => {
   if (error.response) {
     // Server responded with an error
