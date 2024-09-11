@@ -2,9 +2,14 @@
 // import RichTextEditor from "@mantine/rte";
 import { Box, Paper, Typography,Grid,TextField,Button } from "@mui/material";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 
 // import { Quill } from 'react-quill';
 // import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+
+const RichTextEditor = dynamic(() => import("@mantine/rte"), {
+  ssr: false,
+});
 
 interface BlogFormProps {
   status: string
@@ -84,7 +89,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
             <Typography variant="h6" gutterBottom>
               Blog Content
             </Typography>
-            {/* <RichTextEditor
+            <RichTextEditor
               id="rte"
               controls={[
                 ["bold", "italic", "underline", "link", "image"],
@@ -94,7 +99,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
               ]}
               value={content}
               onChange={setContent}
-            /> */}
+            />
           </Grid>
         </Grid> 
 
