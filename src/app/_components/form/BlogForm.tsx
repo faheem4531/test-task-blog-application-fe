@@ -1,7 +1,8 @@
 "use client";
 // next/react imports
-import dynamic from "next/dynamic";
 import { useRef, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
 // third party imports
 import { createBlog, updateBlog, uploadImage } from "@/app/_api/apiService";
@@ -18,7 +19,6 @@ import {
   EditorControls,
   Modes,
 } from "@/app/_enums/blogEnums";
-import { useRouter } from "next/navigation";
 
 const RichTextEditor = dynamic(() => import("@mantine/rte"), {
   ssr: false,
@@ -72,7 +72,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ mode, existingBlog }) => {
       setValue("author", existingBlog.author);
       setValue("category", existingBlog.category);
       setValue("content", existingBlog.content);
-      // Do not reset coverImage since it's not part of the existingBlog
+      setSelectedFile(null);
     }
   }, [mode, existingBlog, setValue]);
 
@@ -270,19 +270,52 @@ const BlogForm: React.FC<BlogFormProps> = ({ mode, existingBlog }) => {
               </Grid>
 
               <Grid item xs={12}>
-                <TextField
+                <Typography variant="h6" gutterBottom>
+                  Cover Image
+                </Typography>
+                {mode === Modes.EDIT &&
+                existingBlog?.coverImage &&
+                !selectedFile ? (
+                  <Box mb={2}>
+                    <img
+                      src={existingBlog.coverImage}
+                      alt="Cover"
+                      style={{
+                        maxWidth: "200px", // Adjust the max-width as needed
+                        height: "auto",
+                        display: "block",
+                        marginBottom: "0.5rem",
+                      }}
+                    />
+                    <Typography mt={1}>Current cover image</Typography>
+                  </Box>
+                ) : null}
+                <input
                   type="file"
-                  inputProps={{ accept: "image/*" }}
+                  accept="image/*"
                   onChange={handleFileChange}
-                  inputRef={fileInputRef} // Attach ref here
-                  error={!!errors.coverImage}
-                  helperText={
-                    errors.coverImage ? FormErrors.COVER_IMAGE_REQUIRED : ""
-                  }
+                  ref={fileInputRef}
+                  style={{ display: "block", marginTop: "1rem" }}
                 />
                 {selectedFile && (
-                  <Typography mt={2}>
-                    Selected file: {selectedFile.name}
+                  <Box mt={2}>
+                    <img
+                      src={URL.createObjectURL(selectedFile)}
+                      alt="Selected"
+                      style={{
+                        maxWidth: "200px", // Adjust the max-width as needed
+                        height: "auto",
+                        display: "block",
+                      }}
+                    />
+                    <Typography mt={1}>
+                      Selected file: {selectedFile.name}
+                    </Typography>
+                  </Box>
+                )}
+                {errors.coverImage && (
+                  <Typography color="error" variant="body2">
+                    {FormErrors.COVER_IMAGE_REQUIRED}
                   </Typography>
                 )}
               </Grid>
