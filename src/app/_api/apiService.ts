@@ -44,6 +44,18 @@ export const createBlog = async (blogData: IBlogPayload): Promise<IBlog> => {
   }
 };
 
+export const updateBlog = async (
+  id: string,
+  blogData: IBlogPayload
+): Promise<IBlog> => {
+  try {
+    const response = await apiClient.put(`blogs/${id}`, blogData);
+    return response.data;
+  } catch (error: any) {
+    throw handleError(error, "Failed to fetch product details");
+  }
+};
+
 export const uploadImage = async (formData: FormData): Promise<string> => {
   try {
     const response = await apiClient.post("/cloudinary/upload", formData, {

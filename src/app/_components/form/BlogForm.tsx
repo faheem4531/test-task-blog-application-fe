@@ -1,10 +1,10 @@
 "use client";
 // next/react imports
 import dynamic from "next/dynamic";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 // third party imports
-import { createBlog, uploadImage } from "@/app/_api/apiService";
+import { createBlog, updateBlog, uploadImage } from "@/app/_api/apiService";
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -18,6 +18,7 @@ import {
   EditorControls,
   Modes,
 } from "@/app/_enums/blogEnums";
+import { useRouter } from "next/navigation";
 
 const RichTextEditor = dynamic(() => import("@mantine/rte"), {
   ssr: false,
@@ -25,6 +26,7 @@ const RichTextEditor = dynamic(() => import("@mantine/rte"), {
 
 interface BlogFormProps {
   mode: "edit" | "create";
+  existingBlog?: IBlog;
 }
 
 interface BlogFormData {
@@ -36,7 +38,7 @@ interface BlogFormData {
   coverImage: File | null;
 }
 
-const BlogForm: React.FC<BlogFormProps> = ({ mode }) => {
+const BlogForm: React.FC<BlogFormProps> = ({ mode, existingBlog }) => {
   const {
     handleSubmit,
     control,
@@ -58,9 +60,21 @@ const BlogForm: React.FC<BlogFormProps> = ({ mode }) => {
   const btnStatus =
     mode === Modes.EDIT ? ButtonStatus.EDIT : ButtonStatus.CREATE;
 
+  const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (mode === Modes.EDIT && existingBlog) {
+      setValue("title", existingBlog.title);
+      setValue("description", existingBlog.briefContent);
+      setValue("author", existingBlog.author);
+      setValue("category", existingBlog.category);
+      setValue("content", existingBlog.content);
+      // Do not reset coverImage since it's not part of the existingBlog
+    }
+  }, [mode, existingBlog, setValue]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -71,35 +85,51 @@ const BlogForm: React.FC<BlogFormProps> = ({ mode }) => {
   };
 
   const onSubmit = async (data: BlogFormData) => {
-    if (!data.coverImage) {
+    if (mode === Modes.CREATE && !data.coverImage) {
       toast.error(FormErrors.COVER_IMAGE_REQUIRED);
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", data.coverImage);
-
     setLoading(true); // Start loading
     try {
-      const coverImage = await uploadImage(formData);
+      let coverImageUrl = "";
+      if (data.coverImage) {
+        const formData = new FormData();
+        formData.append("file", data.coverImage);
+        coverImageUrl = await uploadImage(formData);
+      } else if (mode === Modes.EDIT && existingBlog?.coverImage) {
+        coverImageUrl = existingBlog.coverImage;
+      }
+
       const blogData: IBlogPayload = {
         title: data.title,
         briefContent: data.description,
         author: data.author,
         content: data.content,
-        coverImage,
+        coverImage: coverImageUrl,
         category: data.category,
       };
-      await createBlog(blogData);
-      toast.success("Blog created successfully!");
-      reset(); // Reset form after successful submission
-      setSelectedFile(null); // Clear selected file state
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ""; // Clear the file input value
+
+      if (mode === Modes.CREATE) {
+        await createBlog(blogData);
+        reset(); // Reset form after successful submission
+        setSelectedFile(null); // Clear selected file state
+        if (fileInputRef.current) {
+          fileInputRef.current.value = ""; // Clear the file input value
+        }
+        toast.success("Blog created successfully!");
+      } else if (mode === Modes.EDIT && existingBlog) {
+        await updateBlog(existingBlog._id, blogData);
+        toast.success("Blog updated successfully!");
+        router.back();
       }
     } catch (error) {
-      console.error("Error uploading file:", error);
-      toast.error("Error creating blog. Please try again.");
+      console.error("Error handling blog:", error);
+      toast.error(
+        `Error ${
+          mode === Modes.CREATE ? "creating" : "updating"
+        } blog. Please try again.`
+      );
     } finally {
       setLoading(false); // End loading
     }

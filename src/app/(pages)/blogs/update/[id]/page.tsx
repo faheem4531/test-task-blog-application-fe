@@ -32,7 +32,7 @@ const Edit = () => {
 
   return (
     <AppLoader loading={loading}>
-      <BlogForm mode={Modes.EDIT} />
+      <BlogForm mode={Modes.EDIT} existingBlog={blog} />
     </AppLoader>
   );
 };
