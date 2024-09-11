@@ -26,6 +26,15 @@ export const getBlogById = async (id: string): Promise<IBlog> => {
   }
 };
 
+export const uploadImage = async (formData: FormData): Promise<string> => {
+  try {
+    const response = await apiClient.post("/cloudinary/upload", formData);
+    return response.data.secure_url;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to upload image");
+  }
+};
+
 export const handleError = (error: any, defaultMessage: string): void => {
   if (error.response) {
     // Server responded with an error

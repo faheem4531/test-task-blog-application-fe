@@ -1,11 +1,9 @@
 'use client'
-// import RichTextEditor from "@mantine/rte";
+
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-
-// import { Quill } from 'react-quill';
-// import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import { uploadImage } from '@/app/_api/apiService'; 
 
 const RichTextEditor = dynamic(() => import("@mantine/rte"), {
   ssr: false,
@@ -22,34 +20,49 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
   const heading = status === "edit" ? "Edit Blog" : "Create a New Blog";
   const btnStatus = status === "edit" ? "Update Blog" : "Publish Blog";
 
-  const handleSubmit = () => {
-    const blogData = {
-      title,
-      description,
-      author,
-      content,
-    };
-    console.log("Submitted Blog Data:", blogData);
-    
-    alert("Blog submitted successfully! Check console for details.");
+  // const handleSubmit = () => {
+  //   const blogData = {
+  //     title,
+  //     description,
+  //     author,
+  //     content,
+  //   };
+  //   console.log("Submitted Blog Data:", blogData);
 
-    setTitle("")
-    setDescription("")
-    setAuthor("")
-    setContent("")
+  //   alert("Blog submitted successfully! Check console for details.");
+
+  //   setTitle("")
+  //   setDescription("")
+  //   setAuthor("")
+  //   setContent("")
+  // };
+
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]; 
+    if (file) {
+      setSelectedFile(file);
+    }
   };
 
-  // const ImageHandler = () => {
-  //   const handleImageUpload = () => {
-  //     // Implement image upload logic here
-  //   };
+  const handleSubmit = async () => {
+    if (!selectedFile) {
+      alert("Please select a file first.");
+      return;
+    }
 
-  //   Quill.register('modules/imageHandler', {
-  //     handleImageUpload
-  //   });
+    const formData = new FormData();
+    formData.append("image", selectedFile);
 
-  //   return null;
-  // };
+    try {
+      const imageUrl = await uploadImage(formData)
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
+
 
   return (
     <Box sx={{ p: 4, maxWidth: "800px", margin: "50px auto 0" }}>
@@ -99,7 +112,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
             <RichTextEditor
               id="rte"
               controls={[
-                ["bold", "italic", "underline", "link", "image"],
+                ["bold", "italic", "underline", "link"],
                 ["unorderedList", "h1", "h2", "h3", "h4", "h5", "h6"],
                 ["sup", "sub"],
                 ["alignLeft", "alignCenter", "alignRight"],
@@ -107,6 +120,19 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
               value={content}
               onChange={setContent}
             />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField
+              type="file"
+              inputProps={{ accept: "image/*" }}
+              onChange={handleFileChange}
+            />
+            {selectedFile && (
+              <Typography mt={2}>
+                Selected file: {selectedFile.name}
+              </Typography>
+            )}
           </Grid>
         </Grid>
 
@@ -121,7 +147,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
             disabled={!title || !author || !description || !content}
             onClick={handleSubmit}
           >
-           {btnStatus}
+            {btnStatus}
           </Button>
         </Box>
       </Paper>
