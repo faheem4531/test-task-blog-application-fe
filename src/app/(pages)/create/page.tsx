@@ -3,6 +3,9 @@ import RichTextEditor from "@mantine/rte";
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 
+import { Quill } from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+
 const CreateBlog = () => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -18,6 +21,18 @@ const CreateBlog = () => {
     };
     console.log("Submitted Blog Data:", blogData);
     alert("Blog submitted successfully! Check console for details.");
+  };
+
+  const ImageHandler = () => {
+    const handleImageUpload = () => {
+      // Implement image upload logic here
+    };
+
+    Quill.register('modules/imageHandler', {
+      handleImageUpload
+    });
+
+    return null;
   };
 
   return (
@@ -78,9 +93,7 @@ const CreateBlog = () => {
                 ["alignLeft", "alignCenter", "alignRight"],
               ]}
               value={content}
-              
               onChange={setContent}
-              sx={{ minHeight: 300 }}
             />
           </Grid>
         </Grid>
