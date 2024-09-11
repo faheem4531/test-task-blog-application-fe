@@ -1,13 +1,22 @@
 interface IBlog {
-  _id?: string;
+  _id: string;
   title: string;
   content: string;
   coverImage: string;
   briefContent: string;
   author: string;
   category: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface IBlogPayload {
+  title: string;
+  content: string;
+  coverImage: string;
+  briefContent: string;
+  author: string;
+  category: string;
 }
 
 // responses

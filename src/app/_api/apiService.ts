@@ -35,7 +35,7 @@ export const deleteBlogById = async (id: string): Promise<IBlog> => {
   }
 };
 
-export const createBlog = async (blogData: IBlog): Promise<IBlog> => {
+export const createBlog = async (blogData: IBlogPayload): Promise<IBlog> => {
   try {
     const response = await apiClient.post("blogs", blogData);
     return response.data;

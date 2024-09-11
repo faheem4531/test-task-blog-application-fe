@@ -1,18 +1,11 @@
 "use client";
 
-import BlogForm from '@/app/_components/form/BlogForm';
+// local imports
+import BlogForm from "@/app/_components/form/BlogForm";
+import { Modes } from "@/app/_enums/blogEnums";
 
-// react/next imports
-import { useParams } from "next/navigation";
-
-const BelogsDetails = () => {
-  const { id } = useParams();
-
-  return (
-    <>
-      <BlogForm status="create"/>
-    </>
-  );
+const Create = () => {
+  return <BlogForm mode={Modes.CREATE} />;
 };
 
-export default BelogsDetails;
+export default Create;

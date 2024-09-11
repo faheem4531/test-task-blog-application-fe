@@ -106,10 +106,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
                 {date}
               </Typography>
               <Box>
-                <IconButton
-                  color="primary"
-                  onClick={() => handleEdit("dumyId")}
-                >
+                <IconButton color="primary" onClick={() => handleEdit(_id)}>
                   <EditIcon />
                 </IconButton>
                 <IconButton

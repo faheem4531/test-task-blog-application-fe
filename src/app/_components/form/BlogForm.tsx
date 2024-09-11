@@ -11,13 +11,20 @@ import { toast } from "react-toastify";
 
 // local imports
 import AppLoader from "../loader/AppLoader";
+import {
+  FormErrors,
+  ButtonStatus,
+  FormHeading,
+  EditorControls,
+  Modes,
+} from "@/app/_enums/blogEnums";
 
 const RichTextEditor = dynamic(() => import("@mantine/rte"), {
   ssr: false,
 });
 
 interface BlogFormProps {
-  status: string;
+  mode: "edit" | "create";
 }
 
 interface BlogFormData {
@@ -29,7 +36,7 @@ interface BlogFormData {
   coverImage: File | null;
 }
 
-const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
+const BlogForm: React.FC<BlogFormProps> = ({ mode }) => {
   const {
     handleSubmit,
     control,
@@ -47,26 +54,25 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
     },
   });
 
-  const heading = status === "edit" ? "Edit Blog" : "Create a New Blog";
-  const btnStatus = status === "edit" ? "Update Blog" : "Publish Blog";
+  const heading = mode === Modes.EDIT ? FormHeading.EDIT : FormHeading.CREATE;
+  const btnStatus =
+    mode === Modes.EDIT ? ButtonStatus.EDIT : ButtonStatus.CREATE;
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false); // Loading state
-
-  // Ref for file input to reset its value after form submission
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file);
-      setValue("coverImage", file); // Update form value with selected file
+      setValue("coverImage", file);
     }
   };
 
   const onSubmit = async (data: BlogFormData) => {
     if (!data.coverImage) {
-      toast.error("Please select a file first.");
+      toast.error(FormErrors.COVER_IMAGE_REQUIRED);
       return;
     }
 
@@ -76,7 +82,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
     setLoading(true); // Start loading
     try {
       const coverImage = await uploadImage(formData);
-      const blogData = {
+      const blogData: IBlogPayload = {
         title: data.title,
         briefContent: data.description,
         author: data.author,
@@ -113,7 +119,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
                 <Controller
                   name="title"
                   control={control}
-                  rules={{ required: "Title is required." }}
+                  rules={{ required: FormErrors.TITLE_REQUIRED }}
                   render={({ field }) => (
                     <TextField
                       {...field}
@@ -131,7 +137,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
                 <Controller
                   name="description"
                   control={control}
-                  rules={{ required: "Description is required." }}
+                  rules={{ required: FormErrors.DESCRIPTION_REQUIRED }}
                   render={({ field }) => (
                     <TextField
                       {...field}
@@ -151,7 +157,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
                 <Controller
                   name="author"
                   control={control}
-                  rules={{ required: "Author is required." }}
+                  rules={{ required: FormErrors.AUTHOR_REQUIRED }}
                   render={({ field }) => (
                     <TextField
                       {...field}
@@ -169,7 +175,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
                 <Controller
                   name="category"
                   control={control}
-                  rules={{ required: "Category is required." }}
+                  rules={{ required: FormErrors.CATEGORY_REQUIRED }}
                   render={({ field }) => (
                     <TextField
                       {...field}
@@ -192,16 +198,33 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
                 <Controller
                   name="content"
                   control={control}
-                  rules={{ required: "Content is required." }}
+                  rules={{ required: FormErrors.CONTENT_REQUIRED }}
                   render={({ field }) => (
                     <>
                       <RichTextEditor
                         id="rte"
                         controls={[
-                          ["bold", "italic", "underline", "link"],
-                          ["unorderedList", "h1", "h2", "h3", "h4", "h5", "h6"],
-                          ["sup", "sub"],
-                          ["alignLeft", "alignCenter", "alignRight"],
+                          [
+                            EditorControls.BOLD,
+                            EditorControls.ITALIC,
+                            EditorControls.UNDERLINE,
+                            EditorControls.LINK,
+                          ],
+                          [
+                            EditorControls.UNORDERED_LIST,
+                            EditorControls.H1,
+                            EditorControls.H2,
+                            EditorControls.H3,
+                            EditorControls.H4,
+                            EditorControls.H5,
+                            EditorControls.H6,
+                          ],
+                          [EditorControls.SUP, EditorControls.SUB],
+                          [
+                            EditorControls.ALIGN_LEFT,
+                            EditorControls.ALIGN_CENTER,
+                            EditorControls.ALIGN_RIGHT,
+                          ],
                         ]}
                         value={field.value}
                         onChange={field.onChange}
@@ -224,7 +247,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
                   inputRef={fileInputRef} // Attach ref here
                   error={!!errors.coverImage}
                   helperText={
-                    errors.coverImage ? "Please select a valid image file." : ""
+                    errors.coverImage ? FormErrors.COVER_IMAGE_REQUIRED : ""
                   }
                 />
                 {selectedFile && (
