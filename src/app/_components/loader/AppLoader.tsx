@@ -23,6 +23,7 @@ const AppLoader: React.FC<AppLoaderProps> = ({ children, loading }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            zIndex: 9999,
           }}
         >
           <ThreeDots
