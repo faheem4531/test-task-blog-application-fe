@@ -1,52 +1,52 @@
 'use client'
-import RichTextEditor from "@mantine/rte";
+// import RichTextEditor from "@mantine/rte";
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+// import { useState } from "react";
 
-import { Quill } from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+// import { Quill } from 'react-quill';
+// import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
 // interface CreateBlogProps {
 //   status: string
 // }
 const CreateBlog: React.FC = () => {
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [author, setAuthor] = useState<string>("");
-  const [content, setContent] = useState<string>("");
+  // const [title, setTitle] = useState<string>("");
+  // const [description, setDescription] = useState<string>("");
+  // const [author, setAuthor] = useState<string>("");
+  // const [content, setContent] = useState<string>("");
 
-  const handleSubmit = () => {
-    const blogData = {
-      title,
-      description,
-      author,
-      content,
-    };
-    console.log("Submitted Blog Data:", blogData);
-    alert("Blog submitted successfully! Check console for details.");
-  };
+  // const handleSubmit = () => {
+  //   const blogData = {
+  //     title,
+  //     description,
+  //     author,
+  //     content,
+  //   };
+  //   console.log("Submitted Blog Data:", blogData);
+  //   alert("Blog submitted successfully! Check console for details.");
+  // };
 
-  const ImageHandler = () => {
-    const handleImageUpload = () => {
-      // Implement image upload logic here
-    };
+  // const ImageHandler = () => {
+  //   const handleImageUpload = () => {
+  //     // Implement image upload logic here
+  //   };
 
-    Quill.register('modules/imageHandler', {
-      handleImageUpload
-    });
+  //   Quill.register('modules/imageHandler', {
+  //     handleImageUpload
+  //   });
 
-    return null;
-  };
+  //   return null;
+  // };
 
   return (
     <Box sx={{ p: 4, maxWidth: "800px", margin: "50px auto 0" }}>
       <Paper elevation={3} sx={{ p: 3 }}>
         <Typography variant="h4" gutterBottom align="center">
-          {status === "edit" ? "Edit " : "Create a New "} Blog
+          {/* {status === "edit" ? "Edit " : "Create a New "} Blog */}
+          Create blog
         </Typography>
 
-        <Grid container spacing={3}>
-          {/* Title Field */}
+        {/* <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -58,7 +58,6 @@ const CreateBlog: React.FC = () => {
             />
           </Grid>
 
-          {/* Description Field */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -70,7 +69,6 @@ const CreateBlog: React.FC = () => {
             />
           </Grid>
 
-          {/* Author Field */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -82,7 +80,6 @@ const CreateBlog: React.FC = () => {
             />
           </Grid>
 
-          {/* Rich Text Editor */}
           <Grid item xs={12}>
             <Typography variant="h6" gutterBottom>
               Blog Content
@@ -99,10 +96,10 @@ const CreateBlog: React.FC = () => {
               onChange={setContent}
             />
           </Grid>
-        </Grid>
+        </Grid> */}
 
         {/* Submit Button */}
-        <Box mt={4} display="flex" justifyContent="center">
+        {/* <Box mt={4} display="flex" justifyContent="center">
           <Button
             sx={{
               bgcolor: "#222831",
@@ -114,7 +111,7 @@ const CreateBlog: React.FC = () => {
           >
             Publish Blog
           </Button>
-        </Box>
+        </Box> */}
       </Paper>
     </Box>
   );
