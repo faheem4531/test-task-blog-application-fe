@@ -1,7 +1,7 @@
 'use client'
 // import RichTextEditor from "@mantine/rte";
-import { Box, Paper, Typography } from "@mui/material";
-// import { useState } from "react";
+import { Box, Paper, Typography,Grid,TextField,Button } from "@mui/material";
+import { useState } from "react";
 
 // import { Quill } from 'react-quill';
 // import 'react-quill/dist/quill.snow.css'; // Import Quill styles
@@ -10,21 +10,21 @@ interface BlogFormProps {
   status: string
 }
 const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
-  // const [title, setTitle] = useState<string>("");
-  // const [description, setDescription] = useState<string>("");
-  // const [author, setAuthor] = useState<string>("");
-  // const [content, setContent] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [author, setAuthor] = useState<string>("");
+  const [content, setContent] = useState<string>("");
 
-  // const handleSubmit = () => {
-  //   const blogData = {
-  //     title,
-  //     description,
-  //     author,
-  //     content,
-  //   };
-  //   console.log("Submitted Blog Data:", blogData);
-  //   alert("Blog submitted successfully! Check console for details.");
-  // };
+  const handleSubmit = () => {
+    const blogData = {
+      title,
+      description,
+      author,
+      content,
+    };
+    console.log("Submitted Blog Data:", blogData);
+    alert("Blog submitted successfully! Check console for details.");
+  };
 
   // const ImageHandler = () => {
   //   const handleImageUpload = () => {
@@ -46,7 +46,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
           {status}
         </Typography>
 
-        {/* <Grid container spacing={3}>
+       <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -84,7 +84,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
             <Typography variant="h6" gutterBottom>
               Blog Content
             </Typography>
-            <RichTextEditor
+            {/* <RichTextEditor
               id="rte"
               controls={[
                 ["bold", "italic", "underline", "link", "image"],
@@ -94,12 +94,11 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
               ]}
               value={content}
               onChange={setContent}
-            />
+            /> */}
           </Grid>
-        </Grid> */}
+        </Grid> 
 
-        {/* Submit Button */}
-        {/* <Box mt={4} display="flex" justifyContent="center">
+        <Box mt={4} display="flex" justifyContent="center">
           <Button
             sx={{
               bgcolor: "#222831",
@@ -111,7 +110,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
           >
             Publish Blog
           </Button>
-        </Box> */}
+        </Box>
       </Paper>
     </Box>
   );
