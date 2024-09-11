@@ -1,8 +1,6 @@
 "use client";
 
-import CreateBlog from '@/app/(pages)/create/page';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Box, Button, CardMedia, Container, Divider, Typography } from '@mui/material';
+import BlogForm from '@/app/_components/form/BlogForm';
 
 // react/next imports
 import { useParams } from "next/navigation";
@@ -11,9 +9,9 @@ const BelogsDetails = () => {
   const { id } = useParams();
 
   return (
-<>
-<CreateBlog />
-</>
+    <>
+      <BlogForm status="update"/>
+    </>
   );
 };
 
