@@ -23,24 +23,6 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
   const heading = status === "edit" ? "Edit Blog" : "Create a New Blog";
   const btnStatus = status === "edit" ? "Update Blog" : "Publish Blog";
 
-  // const handleSubmit = () => {
-  // const blogData = {
-  //   title,
-  //   description,
-  //   author,
-  //   content,
-  // };
-  //   console.log("Submitted Blog Data:", blogData);
-
-  //   alert("Blog submitted successfully! Check console for details.");
-
-  //   setTitle("")
-  //   setDescription("")
-  //   setAuthor("")
-  //   setContent("")
-  // };
-
-
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -172,7 +154,6 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
               fontSize: "16px",
               padding: "10px 30px"
             }}
-            disabled={!title || !author || !description || !content}
             onClick={handleSubmit}
           >
             {btnStatus}
