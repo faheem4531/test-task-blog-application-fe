@@ -37,7 +37,11 @@ export const deleteBlogById = async (id: string): Promise<IBlog> => {
 
 export const uploadImage = async (formData: FormData): Promise<string> => {
   try {
-    const response = await apiClient.post("/cloudinary/upload", formData);
+    const response = await apiClient.post("/cloudinary/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data.secure_url;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Failed to upload image");

@@ -1,9 +1,9 @@
 'use client'
 
+import { uploadImage } from '@/app/_api/apiService';
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { uploadImage } from '@/app/_api/apiService'; 
 
 const RichTextEditor = dynamic(() => import("@mantine/rte"), {
   ssr: false,
@@ -41,7 +41,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]; 
+    const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file);
     }
@@ -54,10 +54,11 @@ const BlogForm: React.FC<BlogFormProps> = ({ status }) => {
     }
 
     const formData = new FormData();
-    formData.append("image", selectedFile);
+    formData.append("file", selectedFile);
 
     try {
       const imageUrl = await uploadImage(formData)
+      console.log(imageUrl, "imageUrl")
     } catch (error) {
       console.error("Error uploading file:", error);
     }
