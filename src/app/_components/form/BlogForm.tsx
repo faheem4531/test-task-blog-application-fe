@@ -1,16 +1,16 @@
 "use client";
-// next/react imports
+// Next/React imports
 import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 
-// third party imports
+// Third-party imports
 import { createBlog, updateBlog, uploadImage } from "@/app/_api/apiService";
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-toastify";
 
-// local imports
+// Local imports
 import AppLoader from "../loader/AppLoader";
 import {
   FormErrors,
@@ -20,9 +20,7 @@ import {
   Modes,
 } from "@/app/_enums/blogEnums";
 
-const RichTextEditor = dynamic(() => import("@mantine/rte"), {
-  ssr: false,
-});
+const RichTextEditor = dynamic(() => import("@mantine/rte"), { ssr: false });
 
 interface BlogFormProps {
   mode: "edit" | "create";
@@ -90,7 +88,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ mode, existingBlog }) => {
       return;
     }
 
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
       let coverImageUrl = "";
       if (data.coverImage) {
@@ -112,10 +110,10 @@ const BlogForm: React.FC<BlogFormProps> = ({ mode, existingBlog }) => {
 
       if (mode === Modes.CREATE) {
         await createBlog(blogData);
-        reset(); // Reset form after successful submission
-        setSelectedFile(null); // Clear selected file state
+        reset();
+        setSelectedFile(null);
         if (fileInputRef.current) {
-          fileInputRef.current.value = ""; // Clear the file input value
+          fileInputRef.current.value = "";
         }
         toast.success("Blog created successfully!");
       } else if (mode === Modes.EDIT && existingBlog) {
@@ -131,8 +129,41 @@ const BlogForm: React.FC<BlogFormProps> = ({ mode, existingBlog }) => {
         } blog. Please try again.`
       );
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
+  };
+
+  const renderFilePreview = () => {
+    if (mode === Modes.EDIT && existingBlog?.coverImage && !selectedFile) {
+      return (
+        <Box mb={2}>
+          <img
+            src={existingBlog.coverImage}
+            alt="Cover"
+            style={{
+              maxWidth: "200px",
+              height: "auto",
+              display: "block",
+              marginBottom: "0.5rem",
+            }}
+          />
+          <Typography mt={1}>Current cover image</Typography>
+        </Box>
+      );
+    }
+    if (selectedFile) {
+      return (
+        <Box mt={2}>
+          <img
+            src={URL.createObjectURL(selectedFile)}
+            alt="Selected"
+            style={{ maxWidth: "200px", height: "auto", display: "block" }}
+          />
+          <Typography mt={1}>Selected file: {selectedFile.name}</Typography>
+        </Box>
+      );
+    }
+    return null;
   };
 
   return (
@@ -273,23 +304,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ mode, existingBlog }) => {
                 <Typography variant="h6" gutterBottom>
                   Cover Image
                 </Typography>
-                {mode === Modes.EDIT &&
-                existingBlog?.coverImage &&
-                !selectedFile ? (
-                  <Box mb={2}>
-                    <img
-                      src={existingBlog.coverImage}
-                      alt="Cover"
-                      style={{
-                        maxWidth: "200px", // Adjust the max-width as needed
-                        height: "auto",
-                        display: "block",
-                        marginBottom: "0.5rem",
-                      }}
-                    />
-                    <Typography mt={1}>Current cover image</Typography>
-                  </Box>
-                ) : null}
+                {renderFilePreview()}
                 <input
                   type="file"
                   accept="image/*"
@@ -297,22 +312,6 @@ const BlogForm: React.FC<BlogFormProps> = ({ mode, existingBlog }) => {
                   ref={fileInputRef}
                   style={{ display: "block", marginTop: "1rem" }}
                 />
-                {selectedFile && (
-                  <Box mt={2}>
-                    <img
-                      src={URL.createObjectURL(selectedFile)}
-                      alt="Selected"
-                      style={{
-                        maxWidth: "200px", // Adjust the max-width as needed
-                        height: "auto",
-                        display: "block",
-                      }}
-                    />
-                    <Typography mt={1}>
-                      Selected file: {selectedFile.name}
-                    </Typography>
-                  </Box>
-                )}
                 {errors.coverImage && (
                   <Typography color="error" variant="body2">
                     {FormErrors.COVER_IMAGE_REQUIRED}
@@ -325,9 +324,9 @@ const BlogForm: React.FC<BlogFormProps> = ({ mode, existingBlog }) => {
               <Button
                 sx={{
                   bgcolor: "#222831",
-                  color: "#f3f3f3",
-                  fontSize: "16px",
-                  padding: "10px 30px",
+                  color: "#f0f0f0",
+                  ":hover": { bgcolor: "#444d56" },
+                  p: 2,
                 }}
                 type="submit"
               >
