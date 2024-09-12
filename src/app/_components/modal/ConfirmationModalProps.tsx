@@ -55,7 +55,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           <Button onClick={onClose} sx={{ mr: 2 }}>
             {cancelText}
           </Button>
-          <Button onClick={onConfirm} color="primary" variant="contained">
+          <Button onClick={onConfirm} color="error" variant="contained">
             {confirmText}
           </Button>
         </Box>
