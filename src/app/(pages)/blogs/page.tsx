@@ -47,7 +47,7 @@ const Blogs = () => {
               title={item.title}
               description={item.briefContent}
               author={item.author}
-              date={item.createdAt}
+              date={new Date(item.createdAt).toLocaleDateString()}
               onClick={() => handleNavigate(item._id)}
               onDelete={() => handleDelete(item._id)}
             />
