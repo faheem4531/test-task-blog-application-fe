@@ -94,7 +94,7 @@ const FlatList = <T,>({
         ) : (
           <Grid container spacing={8}>
             {data.map((item) => (
-              <Grid size={{ xs: 12, sm: 12, md: 6 }} key={keyExtractor(item)}>
+              <Grid size={{ xs: 12, sm: 12 }} key={keyExtractor(item)}>
                 {renderItem(item)}
               </Grid>
             ))}

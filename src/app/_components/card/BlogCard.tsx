@@ -1,7 +1,7 @@
 "use client";
 // react/next imports
-import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 // third party imports
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -76,7 +76,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
         <Card>
           <CardMedia
             component="img"
-            height="250"
+            height="400"
             image={image}
             alt={title}
             sx={{ borderBottom: "1px solid #ddd", cursor: "pointer" }}
